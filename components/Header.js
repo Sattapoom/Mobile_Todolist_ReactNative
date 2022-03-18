@@ -2,8 +2,14 @@ import React, { useState } from "react";
 import {  View,StyleSheet, TextInput, TouchableOpacity, Text } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faMagnifyingGlass,faPlus } from '@fortawesome/free-solid-svg-icons'
-const Header = (props) => {
+
+
+const Header = ({navigation}) => {
   const [text, onChangeText] = useState("");
+
+const pressHandler = () => {
+    navigation.navigate('Addtodo')
+}
 
   return (
     <View style={styles.header}>
@@ -22,12 +28,13 @@ const Header = (props) => {
         <TouchableOpacity style={{width:50}}>
             <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faMagnifyingGlass}/>
         </TouchableOpacity>
-        <TouchableOpacity style={{width:50}}>
+        <TouchableOpacity style={{width:50}} onPress = {pressHandler}>
             <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faPlus }/>
-        </TouchableOpacity>
-    </View>
+            </TouchableOpacity>
+        </View>
   );
 };
+
 
 const styles = StyleSheet.create({
     header: {
@@ -69,7 +76,6 @@ const styles = StyleSheet.create({
     //     left:10,
     //     bottom:5
     // }
-    
 });
 
-export default Header;
+export default Header

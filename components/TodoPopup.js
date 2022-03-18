@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Modal, View, Text,TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
+
 const TodoPopup = (props) => {
     const visible = props.visible;
     const title = props.title;
@@ -13,7 +14,7 @@ const TodoPopup = (props) => {
         >
             <View style={{backgroundColor:"#000000aa",flex:1}}>
                 <View style={styles.container}>
-                    <View style={{marginLeft:'90%'}}>
+                <View style={{marginLeft:'90%'}}>
                     <TouchableOpacity onPress={()=>{props.setVisible(false)}}>
                         <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faXmarkCircle}/>
                     </TouchableOpacity>
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
         margin:50,
         padding:20,
         borderRadius:30,
-        
       },
       title: {
         fontSize: 28,
