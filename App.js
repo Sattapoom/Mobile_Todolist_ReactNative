@@ -8,17 +8,20 @@ const testtodos = [
   {
     id: "0",
     title: "Buy milk",
-    description: "5.00"
+    description: "5.00",
+    favor:true
   },
   {
     id: "1",
-    title: "Buy egg",
-    description: "At market."
+    title: "Buy eggfdsssssssssssssssssssssssssssssssssssssssssss",
+    description: "At market.",
+    favor:false
   },
   {
     id: "2",
     title: "ซื้อผัดไทย",
-    description: "ปากซอย"
+    description: "ปากซอย",
+    favor:false
   },
 ]
 
@@ -35,6 +38,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60
+    backgroundColor:'#222831',
+    color:'#EEEEEE'
   },
 });

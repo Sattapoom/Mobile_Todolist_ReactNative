@@ -1,60 +1,75 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text } from "react-native";
-
+import {  View,StyleSheet, TextInput, TouchableOpacity, Text } from "react-native";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faMagnifyingGlass,faPlus } from '@fortawesome/free-solid-svg-icons'
 const Header = (props) => {
   const [text, onChangeText] = useState("");
 
   return (
-    <SafeAreaView style={styles.header}>
+    <View style={styles.header}>
         <TextInput
             style={styles.input}
             onChangeText={onChangeText}
             placeholder='Search ...'
             value={text}
         />
-        <TouchableOpacity
+        {/* <TouchableOpacity
             activeOpacity={.5}
             style = {styles.button}
         >
             <Text style={styles.button_text}>+</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity style={{width:50}}>
+            <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faMagnifyingGlass}/>
         </TouchableOpacity>
-    </SafeAreaView>
+        <TouchableOpacity style={{width:50}}>
+            <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faPlus }/>
+        </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
     header: {
-      height: 60,
-      padding: 10,
-      backgroundColor: 'black'
+        paddingHorizontal: 10,
+        paddingTop:26,
+        flexDirection: "row",
+        justifyContent:'center',
+        width:'100%',
+        height:120,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        backgroundColor:'#00ADB57D',
+        color:'#EEEEEE',
     },
     input: {
-        backgroundColor: 'white',
-        color: 'black',
-        height: 40,
-        width: 340,
-        borderWidth: 1,
-        borderColor: "white",
-        padding: 10,
+        paddingHorizontal: 10,
+        marginRight:15,
+        width:'70%',
+        height:40,
+        borderRadius:24,
+        backgroundColor:'#EEEEEE',
+        color:'black',
         fontSize: 15
     },
-    button: {
-        backgroundColor: 'green',
-        justifyContent: 'center',
-        alignContent: 'center',
-        borderWidth: 0,
-        borderRadius: (40 / 2),
-        width: 40,
-        height: 40,
-        left:350,
-        bottom: 40
-    },
-    button_text:{
-        fontSize: 30,
-        color:"white",
-        left:10,
-        bottom:5
-    }
+    // button: {
+    //     backgroundColor: 'green',
+    //     justifyContent: 'center',
+    //     alignContent: 'center',
+    //     borderWidth: 0,
+    //     borderRadius: (40 / 2),
+    //     width: 40,
+    //     height: 40,
+    //     left:350,
+    //     bottom: 40
+    // },
+    // button_text:{
+    //     fontSize: 30,
+    //     color:"white",
+    //     left:10,
+    //     bottom:5
+    // }
+    
 });
 
 export default Header;
