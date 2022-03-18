@@ -1,9 +1,14 @@
 import React, {useState} from "react";
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar } from "react-native";
+import TodoPopup from "./TodoPopup";
 
 const Todolist = (props) => {
     
     const DATA = props.todos;
+
+    const [selectedId, setSelectedId] = useState(null);
+    const [visible,setVisible] = useState(false);
+    const [title,setTitle] = useState("");
 
     const Item = ({ item, onPress, backgroundColor, textColor }) => (
         <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
@@ -11,34 +16,35 @@ const Todolist = (props) => {
         </TouchableOpacity>
     );
 
-
-
-    const [selectedId, setSelectedId] = useState(null);
+    const onClick = (item) => {
+      setSelectedId(item.id)
+      setVisible(true)
+      setTitle(item.title)
+    }
 
     const renderItem = ({ item }) => {
       const backgroundColor = item.id === selectedId ? "gray" : "#white";
       const color = item.id === selectedId ? 'white' : 'black';
-  
+    
       return (
         <Item
           item={item}
-          onPress={() => setSelectedId(item.id)}
+          onPress={() => onClick(item)}
           backgroundColor={{ backgroundColor }}
           textColor={{ color }}
         />
       );
     };
 
-
-
     return(
         <View>
             <FlatList
-                data={DATA}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                extraData={selectedId}
+              data={DATA}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              extraData={selectedId}
             />
+            <TodoPopup visible={visible} setVisible={setVisible} title={title}/>
         </View>
     );
 }
