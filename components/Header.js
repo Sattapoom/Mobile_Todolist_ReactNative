@@ -4,35 +4,48 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faMagnifyingGlass,faPlus } from '@fortawesome/free-solid-svg-icons'
 
 
-const Header = ({navigation}) => {
-  const [text, onChangeText] = useState("");
+const Header = (props) => {
+    const [text, onChangeText] = useState("");
+    const todos = props.todos;
 
-const pressHandler = () => {
-    navigation.navigate('Addtodo')
-}
+    const Search = (keyword) =>{
+        const showedTodo = [];
+        if(todos!==[]){
+        for (const [index, value] of todos.entries()) {
+            if(value.title.toLowerCase().includes(keyword.toLowerCase())){
+                showedTodo.push(value)
+            }
+        }}
+        
+        return props.onChangeTodos(showedTodo);
+    }
 
-  return (
-    <View style={styles.header}>
-        <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            placeholder='Search ...'
-            value={text}
-        />
-        {/* <TouchableOpacity
-            activeOpacity={.5}
-            style = {styles.button}
-        >
-            <Text style={styles.button_text}>+</Text>
-        </TouchableOpacity> */}
-        <TouchableOpacity style={{width:50}}>
-            <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faMagnifyingGlass}/>
-        </TouchableOpacity>
-        <TouchableOpacity style={{width:50}} onPress = {pressHandler}>
-            <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faPlus }/>
+    const pressHandler = () => {
+        props.navigation.navigate('Addtodo')
+    }
+
+    return (
+        <View style={styles.header}>
+            <TextInput
+                style={styles.input}
+                onChangeText={onChangeText}
+                placeholder='Search ...'
+                value={text}
+            />
+            {/* <TouchableOpacity
+                activeOpacity={.5}
+                style = {styles.button}
+            >
+                <Text style={styles.button_text}>+</Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity style={{width:50}} onPress={()=>{Search(text)}}>
+                <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faMagnifyingGlass}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={{width:50}}>
+                <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faPlus }/>
             </TouchableOpacity>
         </View>
-  );
+    );
 };
 
 

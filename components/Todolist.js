@@ -10,21 +10,21 @@ const Todolist = (props) => {
 
     const [selectedId, setSelectedId] = useState(null);
     const [visible,setVisible] = useState(false);
-    const [title,setTitle] = useState("");
+    const [todo,setTodo] = useState(null);
 
     const Item = ({ item, onPress,prvTitle}) => (
-      <TouchableOpacity onPress={onPress} style={styles.item}>
+        <TouchableOpacity onPress={onPress} style={styles.item}>
           <Text style={[styles.title]}>{prvTitle}</Text>
           <TouchableOpacity style={styles.star} >
-          <FontAwesomeIcon size={45} color={item.favor ? "#FFD600" : '#EEEEEE'} icon={faStar}/>
+            <FontAwesomeIcon size={45} color={item.favor ? "#FFD600" : '#EEEEEE'} icon={faStar}/>
           </TouchableOpacity>  
-      </TouchableOpacity>
+        </TouchableOpacity>
     );
 
     const onClick = (item) => {
       setSelectedId(item.id)
       setVisible(true)
-      setTitle(item.title)
+      setTodo(item)
     }
 
     const renderItem = ({ item }) => {
@@ -51,7 +51,7 @@ const Todolist = (props) => {
               keyExtractor={(item) => item.id}
               extraData={selectedId}
             />
-            <TodoPopup visible={visible} setVisible={setVisible} title={title}/>
+            <TodoPopup visible={visible} setVisible={setVisible} todo={todo}/>
         </View>
     );
 }
@@ -64,18 +64,18 @@ const styles = StyleSheet.create({
         justifyContent:'center',
       },
     item: {
-      flexDirection:'row',
-      paddingHorizontal:25,
-      marginLeft:'auto',
-      marginRight:'auto',
-      marginTop:20,
-      marginBottom:20,
-      alignItems:'center',
-      width: '75%',
-      height:65,
-      borderRadius:(65/2),
-      backgroundColor:'#00ADB57D',
-      color:'#EEEEEE',
+        flexDirection:'row',
+        paddingHorizontal:25,
+        marginLeft:'auto',
+        marginRight:'auto',
+        marginTop:20,
+        marginBottom:20,
+        alignItems:'center',
+        width: '90%',
+        height:65,
+        borderRadius:(65/2),
+        backgroundColor:'#00ADB57D',
+        color:'#EEEEEE',
     },
     title: {
       color:'#EEEEEE',
