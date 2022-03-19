@@ -18,6 +18,7 @@
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/stack": "^6.1.1",
     "add": "^2.0.6",
+    "axios": "^0.26.1",
     "css-select": "^4.2.1",
     "expo": "~44.0.0",
     "expo-image-picker": "~12.0.1",
