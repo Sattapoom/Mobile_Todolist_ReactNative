@@ -1,12 +1,41 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from "react-native";
 import TodoPopup from "./TodoPopup";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 
-const Todolist = (props) => {
+import DataService from "../services/service";
+
+const Todolist = (props) => { 
+
+    const textInput = props.textInput || '';
+
+    const [DATA, onChangeDATA] = useState([]);
     
-    const DATA = props.todos;
+    const getAll = () => {
+      DataService.getAll()
+      .then((response) => {
+      const data = response.data;
+      const showedTodo = [];
+      if(data!==[] && textInput !== ''){
+        data.forEach((value) => {
+            if(value.title.toLowerCase().includes(textInput.toLowerCase())){
+                showedTodo.push(value)
+            }
+        });
+        onChangeDATA(showedTodo);
+      }
+      else{
+        onChangeDATA(data);
+      }
+      
+    })
+    .catch((e) => {
+      console.log(e);
+    });}
+
+    getAll();
+    
 
     const [selectedId, setSelectedId] = useState(null);
     const [visible,setVisible] = useState(false);

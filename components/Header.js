@@ -6,28 +6,22 @@ import { faMagnifyingGlass,faPlus } from '@fortawesome/free-solid-svg-icons'
 
 const Header = (props) => {
   const [text, onChangeText] = useState("");
-  const todos = props.todos;
+
   const pressHandler = () => {
         props.navigation.navigate('AddingTodo')
     }
-  const Search = (keyword) =>{
-    const showedTodo = [];
-    if(todos!==[]){
-        todos.forEach((value) => {
-            if(value.title.toLowerCase().includes(keyword.toLowerCase())){
-                showedTodo.push(value)
-            }
-        });
-    }
-    // for (const [index, value] of todos.entries()) {
-    //     if(value.title.toLowerCase().includes(keyword.toLowerCase())){
-    //         showedTodo.push(value)
-    //     }
-    // }
+//   const Search = (keyword) =>{
+//     const showedTodo = [];
+//     if(todos!==[]){
+//         todos.forEach((value) => {
+//             if(value.title.toLowerCase().includes(keyword.toLowerCase())){
+//                 showedTodo.push(value)
+//             }
+//         });
+//     }
     
-    
-    return props.onChangeTodos(showedTodo);
-}
+//     return props.onChangeTodos(showedTodo);
+// }
     
   return (
     <View style={styles.header}>
@@ -37,7 +31,7 @@ const Header = (props) => {
             placeholder='Search ...'
             value={text}
         />
-        <TouchableOpacity style={{width:50}} onPress={()=>{Search(text)}}>
+        <TouchableOpacity style={{width:50}} onPress={()=>{props.onChangeInput(text)}}>
             <FontAwesomeIcon size={30} color={"#EEEEEE"} icon={faMagnifyingGlass}/>
         </TouchableOpacity>
         <TouchableOpacity style={{width:50}} onPress = {pressHandler}>
