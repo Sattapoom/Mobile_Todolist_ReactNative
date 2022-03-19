@@ -1,4 +1,4 @@
-import React, { useState,useRef } from "react";
+import React, { useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -6,28 +6,20 @@ import {
   Text,
   View,
   Button,
-  ScrollView,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Platform,
+  KeyboardAvoidingView,
 } from "react-native";
-// import ImagePicker from 'react-native-image-crop-picker';
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import {
-  actions,
-  RichToolbar,
-  RichEditor,
 
-} from "react-native-pell-rich-editor";
-
-
-const Addtodo = () => {
+const Addtodo = (props) => {
   const [state, setState] = useState({
     title: "",
     description: "",
     remind: "",
     status: "unfinished",
+    imageUri: null,
   });
   const [selectedImage, setSelectedImage] = useState(null);
   const [date, setDate] = useState(new Date());
@@ -47,7 +39,7 @@ const Addtodo = () => {
       "/" +
       tempDate.getFullYear();
     let fTime = tempDate.getHours() + ":" + tempDate.getMinutes();
-    setText(fDate + "\n" + fTime);
+    setText(fDate + " | " + fTime);
   };
 
   const showMode = (currentMode) => {
@@ -67,16 +59,6 @@ const Addtodo = () => {
     }
     setSelectedImage({ localUri: pickerResult.uri });
   };
-  if (selectedImage !== null) {
-    return (
-      <View>
-        <Image
-          source={{ uri: selectedImage.localUri }}
-          style={styles.thumbnail}
-        />
-      </View>
-    );
-  }
 
   const handler = () => {
     var data = {
@@ -84,6 +66,7 @@ const Addtodo = () => {
       description: state.description,
       remind: text,
       status: "unfinished",
+      imageUri: selectedImage ? selectedImage.localUri : null,
     };
     if (data.title.length == 0 || data.description.length == 0) {
       alert("Some input field is still missing");
@@ -93,83 +76,55 @@ const Addtodo = () => {
       alert("fetch code here");
     }
   };
-  function onPressAddImage() {
-    // you can easily add images from your gallery
-    RichText.current?.insertImage(
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/100px-React-icon.svg.png"
-    );
-  }
-  const richText = React.createRef() || useRef();
+
   return (
-    <View style={{flex:1}}>
-      
-      <TextInput
-        multiline={true}
-        style={styles.input_title}
-        placeholder="Enter title"
-        onChangeText={(newtext) => setState({ ...state, title: newtext })}
-      />
-      <ScrollView>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}	style={{ flex: 1 }}>
-                    <Text>Description:</Text>
-                    <RichEditor
-                        style={styles.input_desc}
-                        onPressAddImage={onPressAddImage}
-                        androidHardwareAccelerationDisabled={true}
-                        ref={richText}
-                        onChange={ descriptionText => {
-                            console.log("descriptionText:", descriptionText);
-                        }}
-                    />
-      </KeyboardAvoidingView>
-      </ScrollView>
-      <RichToolbar
-          editor={richText}
-          actions={[
-            actions.setBold,
-            actions.setItalic,
-            actions.setUnderline, 
-            actions.heading1,
-            actions.insertBulletsList,
-            actions.insertOrderedList,
-            actions.insertImage,
-            
-          ]}
-          iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}
-          onPressAddImage={()=>{openImagePickerAsync()
-          .then(image => {
-            let imageSrc = `data:${image.mime};base64,${image.data}`;
-            richtext.insertImage({ src: imageSrc });
-          });}}
-      />
-      {/* <Text style={{ height:1,width:"100%",backgroundColor:"black",margin:5}}></Text>
-      <TextInput
-        multiline={true}
-        style={styles.input_desc}
-        placeholder="Enter description"
-        onChangeText={(newtext) => setState({ ...state, description: newtext })}
-      />
-      <Text style={styles.label}>Remind Time:</Text>
-      <Text>{text}</Text>
-      <TouchableOpacity onPress={() => showMode("date")} ><Text>DatePicker</Text></TouchableOpacity>
-      <TouchableOpacity onPress={() => showMode("time")} ><Text>TimePicker</Text></TouchableOpacity>
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
+    <View>
+      <View>
+        {selectedImage !== null ? (
+          <View>
+            <Image
+              source={{ uri: selectedImage.localUri }}
+              style={styles.thumbnail}
+            />
+          </View>
+        ) : null}
+        <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
+          <Text style={styles.buttonText}>Pick a photo</Text>
+        </TouchableOpacity>
+      </View>
+      <KeyboardAvoidingView>
+        <Text style={styles.label}>Title:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter title"
+          onChangeText={(newtext) => setState({ ...state, title: newtext })}
         />
-      )}
-       <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-        <Text style={styles.buttonText}>Pick a photo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handler} >
-        <Text>Add</Text>
-      </TouchableOpacity> */}
-      
+        <Text style={styles.label}>Description:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter description"
+          onChangeText={(newtext) =>
+            setState({ ...state, description: newtext })
+          }
+        />
+        <Text style={styles.label}>Remind Time:</Text>
+        <Text style={styles.input}>{text}</Text>
+      </KeyboardAvoidingView>
+      <View>
+        <Button title="DatePicker" onPress={() => showMode("date")} />
+        <Button title="TimePicker" onPress={() => showMode("time")} />
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
+          />
+        )}
+        <Button style={styles.button} title="add" onPress={handler} />
+      </View>
     </View>
   );
 };
@@ -181,36 +136,41 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   label: {
-    color: "#EEEEEE",
+    backgroundColor: "white",
+    color: "black",
+    height: 40,
+    width: 340,
+    borderWidth: 1,
+    borderColor: "white",
+    padding: 10,
+    fontSize: 18,
   },
-  input_title: {
-    fontSize:32,
-    color: "#EEEEEE",
-   
-  },
-  input_desc: {
-    fontSize:18,
-    color: "#EEEEEE",
-    minHeight:120,
-   
+  input: {
+    backgroundColor: "white",
+    color: "black",
+    height: 40,
+    width: 340,
+    borderWidth: 1,
+    borderColor: "white",
+    padding: 10,
+    fontSize: 15,
   },
   button: {
-    marginTop:20,
-    backgroundColor: "green",
+    backgroundColor: "cyan",
     justifyContent: "center",
     alignContent: "center",
-  
   },
   button_text: {
     fontSize: 30,
-    color: "#EEEEEE",
+    color: "white",
+    left: 10,
+    bottom: 5,
   },
   thumbnail: {
-    width: '300',
-    height: 300,
+    width: 360,
+    height: 150,
     resizeMode: "contain",
   },
 });
 
-
-export default Addtodo
+export default Addtodo;
