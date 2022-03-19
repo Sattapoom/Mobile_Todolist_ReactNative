@@ -1,19 +1,21 @@
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 import Home from '../screens/Home';
-import Addtodo from '../screens/Addtodo';
+import AddingTodo from '../screens/AddingTodo';
 
 const screens = {
     Home: {
         screen: Home,
-        navigationOption:{
+        navigationOptions:{
+            headerShown: false,
             title: 'Todo list'
         }
     },
-    Addtodo: {
-        screen : Addtodo,
-        navigationOption:{
-            title: 'Add todo'
+    AddingTodo: {
+        screen :AddingTodo ,
+        navigationOptions:{
+            headerShown: false,
+            title: 'Addtodo'
         }
     }
 }
