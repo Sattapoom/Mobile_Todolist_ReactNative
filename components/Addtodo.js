@@ -31,7 +31,6 @@ const Addtodo = (props) => {
   const [time, setTime] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  // const [text, setText] = useState("time");
   var remind_time = "";
 
   const onChange = (event, selectedValue) => {
@@ -123,8 +122,6 @@ const Addtodo = (props) => {
           onChangeText={(newtext) => setState({ ...state, title: newtext })}
         />
         <View style>
-          {/* <Text style={{color:'#00ADB5',marginLeft:10}}>Remind Time:</Text> */}
-
           <TouchableOpacity onPress={showDatepicker}>
             <Text style={styles.remind_time}>{formatDate(date, time)}</Text>
           </TouchableOpacity>
