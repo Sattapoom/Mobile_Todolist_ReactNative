@@ -1,36 +1,25 @@
 import React,{useState} from 'react';
-import { StyleSheet, Text, View,Button } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Header from '../components/Header';
 import Todolist from '../components/Todolist';
+import DataService from '../services/service';
 
-const testtodos = [
-  {
-    id: "0",
-    title: "Buy milk",
-    description: "5.00",
-    favor:true
-  },
-  {
-    id: "1",
-    title: "Buy eggfdsssssssssssssssssssssssssssssssssssssssssss",
-    description: "At market.",
-    favor:false
-  },
-  {
-    id: "2",
-    title: "ซื้อผัดไทย",
-    description: "ปากซอย",
-    favor:false
-  },
-]
 
 export default function Home({navigation}) {
-  const [todos, onChangeTodos] = useState(testtodos);
+
+  const [todos, onChangeTodos] = useState();
+  DataService.getAll()
+          .then(response =>{
+              onChangeTodos(response.data);
+              console.log(todos);
+          })
+          .catch(e =>{
+            console.log(e);})
 
   return (
     <View style={styles.container}>
-      <Header todos={testtodos} onChangeTodos={onChangeTodos} navigation={ navigation }/>
+      <Header todos={todos} onChangeTodos={onChangeTodos} navigation={ navigation }/>
       <Todolist todos={todos}/>
     </View>
   );
