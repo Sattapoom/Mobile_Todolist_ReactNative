@@ -10,18 +10,6 @@ const Header = (props) => {
   const pressHandler = () => {
     RootNavigation.navigate('Add')
     }
-//   const Search = (keyword) =>{
-//     const showedTodo = [];
-//     if(todos!==[]){
-//         todos.forEach((value) => {
-//             if(value.title.toLowerCase().includes(keyword.toLowerCase())){
-//                 showedTodo.push(value)
-//             }
-//         });
-//     }
-    
-//     return props.onChangeTodos(showedTodo);
-// }
     
   return (
     <View style={styles.header}>

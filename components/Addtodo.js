@@ -5,19 +5,20 @@ import {
   TextInput,
   Text,
   View,
-  Button,
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
+import { faClock, faImage } from "@fortawesome/free-solid-svg-icons";
 import DataService from "../services/service";
-import * as RootNavigation from '../RootNavigation.js';
+import * as RootNavigation from "../RootNavigation.js";
+
 const Addtodo = (props) => {
   const [state, setState] = useState({
     id: null,
@@ -36,17 +37,31 @@ const Addtodo = (props) => {
   var remind_time = "";
 
   const onChange = (event, selectedValue) => {
-    setShow(Platform.OS === "ios");
-    if (mode == "date") {
-      const currentDate = selectedValue || new Date();
-      setDate(currentDate);
-      setMode("time");
-      setShow(Platform.OS !== "ios");
-    } else {
-      const selectedTime = selectedValue || new Date();
-      setTime(selectedTime);
+    if (Platform.OS === "ios") {
       setShow(Platform.OS === "ios");
-      setMode("date");
+      if (mode == "date") {
+        const currentDate = selectedValue || new Date();
+        setDate(currentDate);
+        setMode("time");
+      } else {
+        const selectedTime = selectedValue || new Date();
+        setTime(selectedTime);
+        setShow(false);
+        setMode("date");
+      }
+    } else {
+      setShow(Platform.OS === "ios");
+      if (mode == "date") {
+        const currentDate = selectedValue || new Date();
+        setDate(currentDate);
+        setMode("time");
+        setShow(Platform.OS !== "ios");
+      } else {
+        const selectedTime = selectedValue || new Date();
+        setTime(selectedTime);
+        setShow(Platform.OS === "ios");
+        setMode("date");
+      }
     }
   };
 
@@ -110,106 +125,158 @@ const Addtodo = (props) => {
     }/${date.getFullYear()} ${time.getHours()}:${minute_str}`;
 
     remind_time = return_val;
-    return return_val;
+    return return_val + " ";
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => {
-      Keyboard.dismiss();
-    }}>
-    <View>
-      <KeyboardAvoidingView>
-        <TextInput
-          multiline={true}
-          placeholderTextColor={"#00ADB5"}
-          style={styles.input_title}
-          placeholder="Enter title"
-          onChangeText={(newtext) => setState({ ...state, title: newtext })}
-        />
-        <View style>
-          <TouchableOpacity onPress={showDatepicker}>
-            <Text style={styles.remind_time}>{formatDate(date, time)}</Text>
-          </TouchableOpacity>
-        </View>
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            timeZoneOffsetInMinutes={420}
-            value={date}
-            mode={mode}
-            is24Hour={true}
-            display="default"
-            onChange={onChange}
-          />
-        )}
-
-        <TextInput
-          multiline={true}
-          placeholderTextColor={"#00ADB5"}
-          style={styles.input}
-          placeholder="Enter description"
-          onChangeText={(newtext) =>
-            setState({ ...state, description: newtext })
-          }
-        />
-      </KeyboardAvoidingView>
-      <View>
-        <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-          <Text style={styles.buttonText}>Pick a photo</Text>
-        </TouchableOpacity>
-        {selectedImage !== null ? (
-          <View>
-            <Image
-              source={{ uri: selectedImage.localUri }}
-              style={styles.thumbnail}
+    <ScrollView>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
+      >
+        <View>
+          <KeyboardAvoidingView>
+            <Text style={styles.label}>Title:</Text>
+            <TextInput
+              multiline={true}
+              placeholderTextColor={"#222831"}
+              style={styles.input_title}
+              placeholder="Enter title"
+              onChangeText={(newtext) => setState({ ...state, title: newtext })}
             />
-          </View>
-        ) : null}
-      </View>
-      <Button style={styles.button} title="add" onPress={handler} />
-    </View>
-    </TouchableWithoutFeedback>
+            <Text style={styles.label}>Alarm at:</Text>
+            <View>
+              <TouchableOpacity onPress={showDatepicker}>
+                <Text style={styles.remind_time}>
+                  {formatDate(date, time)}
+                  <FontAwesomeIcon size={26} color={"#00ADB5"} icon={faClock} />
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                timeZoneOffsetInMinutes={420}
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+              />
+            )}
+            <Text style={styles.label}>Description:</Text>
+            <TextInput
+              multiline={true}
+              placeholderTextColor={"#222831"}
+              style={styles.input_desc}
+              placeholder="Enter description"
+              onChangeText={(newtext) =>
+                setState({ ...state, description: newtext })
+              }
+            />
+            <Text style={styles.label}>Upload image:</Text>
+            <View>
+              {selectedImage !== null ? (
+                <View>
+                  <TouchableOpacity onPress={openImagePickerAsync}>
+                    <Image
+                      source={{ uri: selectedImage.localUri }}
+                      style={styles.thumbnail}
+                    />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={openImagePickerAsync}
+                  style={styles.button}
+                >
+                  <FontAwesomeIcon size={60} color={"#00ADB5"} icon={faImage} />
+                </TouchableOpacity>
+              )}
+            </View>
+          </KeyboardAvoidingView>
+        </View>
+      </TouchableWithoutFeedback>
+      <TouchableOpacity style={styles.add_button} onPress={handler}>
+        <Text style={styles.button_text}>Submit</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  input: {
-    marginLeft: 10,
+  label: {
+    marginTop: 10,
+    marginLeft: 20,
     color: "#00ADB5",
-    height: 40,
     width: "100%",
+    fontSize: 20,
+  },
+  input_desc: {
+    textAlignVertical: "top",
+    marginTop: 10,
+    marginBottom: 25,
+    marginLeft: "auto",
+    marginRight: "auto",
+    color: "#222831",
+    minHeight: 140,
+    width: "90%",
     fontSize: 18,
+    borderRadius: 20,
+    backgroundColor: "#EEEEEE",
+    padding: 10,
   },
   input_title: {
-    marginLeft: 10,
-    color: "#00ADB5",
-    height: 50,
-    width: "100%",
-    fontSize: 32,
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 25,
+    marginLeft: "auto",
+    marginRight: "auto",
+    color: "#222831",
+    minHeight: 45,
+    width: "90%",
+    fontSize: 24,
+    borderRadius: 25,
+    backgroundColor: "#EEEEEE",
+    padding: 10,
   },
   remind_time: {
-    marginLeft: 10,
+    marginTop: 10,
+    marginBottom: 25,
+    marginLeft: 20,
     color: "#00ADB5",
     alignItems: "center",
-    height: 50,
+    height: 40,
     width: "100%",
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
   },
   button: {
-    backgroundColor: "cyan",
+    marginTop: 55,
+    marginBottom: 55,
+    marginLeft: "auto",
+    marginRight: "auto",
+    justifyContent: "center",
+    alignContent: "center",
+  },
+  add_button: {
+    backgroundColor: "#00ADB5",
+    width: "100%",
+    height: 45,
+    bottom: 0,
+    marginLeft: "auto",
+    marginRight: "auto",
     justifyContent: "center",
     alignContent: "center",
   },
   button_text: {
+    fontWeight: "bold",
     fontSize: 30,
     color: "#EEEEEE",
-    left: 10,
-    bottom: 5,
+    textAlign: "center",
   },
   thumbnail: {
+    margin: 10,
     width: 360,
     height: 150,
     resizeMode: "contain",
