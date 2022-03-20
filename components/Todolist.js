@@ -11,6 +11,7 @@ const Todolist = (props) => {
     const textInput = props.textInput || '';
 
     const [DATA, onChangeDATA] = useState([]);
+    const navigation = props.navigation;
     
     const getAll = () => {
       DataService.getAll()
@@ -80,7 +81,7 @@ const Todolist = (props) => {
               keyExtractor={(item) => item.id}
               extraData={selectedId}
             />
-            <TodoPopup visible={visible} setVisible={setVisible} todo={todo}/>
+            <TodoPopup visible={visible} setVisible={setVisible} todo={todo} navigation={navigation} />
         </View>
     );
 }

@@ -13,7 +13,7 @@ export default function Home({ navigation }) {
         onChangeInput={onChangeInput}
         navigation={navigation}
       />
-      <Todolist textInput={textInput} />
+      <Todolist textInput={textInput} navigation={navigation} />
     </View>
   );
 }

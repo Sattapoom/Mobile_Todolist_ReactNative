@@ -14,6 +14,11 @@ const TodoPopup = (props) => {
   const visible = props.visible;
   const todo = props.todo;
 
+  const pressHandler = () => {
+    props.setVisible(false)
+    props.navigation.navigate('EditingTodo', props.todo)
+}
+
   return (
     <Modal transparent={true} visible={visible}>
       <View style={{ backgroundColor: "#000000aa", flex: 1 }}>
@@ -59,6 +64,7 @@ const TodoPopup = (props) => {
               size={30}
               color={"#EEEEEE"}
               icon={faGear}
+              onPress={pressHandler}
             />
           </TouchableOpacity>
         </View>

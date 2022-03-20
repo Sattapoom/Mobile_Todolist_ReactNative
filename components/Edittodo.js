@@ -18,16 +18,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import DataService from "../services/service";
 
-const Addtodo = (props) => {
+const Edittodo = (props) => {
+  
+  
   const [state, setState] = useState({
-    id: null,
-    title: "",
-    description: "",
-    finished: false,
-    favor: false,
-    rtime: "",
-    uri: "",
+    id: props.navigation.getParam('id'),
+    title: props.navigation.getParam('title'),
+    description: props.navigation.getParam('description'),
+    finished: props.navigation.getParam('finished'),
+    favor: props.navigation.getParam('favor'),
+    rtime: props.navigation.getParam('rtime'),
+    uri: props.navigation.getParam('uri'),
   });
+
+  const [selectedTiming, setSelectedTiming] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
@@ -48,6 +52,7 @@ const Addtodo = (props) => {
       setShow(Platform.OS === "ios");
       setMode("date");
     }
+    setSelectedTiming(formatDate(date, time));
   };
 
   const showMode = (currentMode) => {
@@ -73,25 +78,32 @@ const Addtodo = (props) => {
   };
 
   const handler = () => {
+    var id = state.id
     var data = {
       title: state.title,
       description: state.description,
-      rtime: remind_time,
-      uri: selectedImage ? selectedImage.localUri : null,
+      finished: state.finished,
+      favor: state.favor,
+      rtime: formatDate(date, time),
+      uri: selectedImage.localUri ,
     };
     if (data.title.length == 0) {
       alert("Title field is missing");
     } else {
-      DataService.create(data)
-        .then((response) => {
+      DataService.update(id,data)
+        .then(() => {
+          console.log(id)
+          console.log(data)
           setState({
-            id: response.data.id,
-            title: response.data.title,
-            description: response.data.description,
-            rtime: response.data.rtime,
-            uri: response.data.imageUri,
+            title: data.title,
+            description: data.description,
+            finished: data.finished,
+            favor: data.favor,
+            rtime: data.rtime,
+            uri: data.imageUri,
           });
-          alert("Todo added");
+
+          alert("Todo edited");
           props.navigation.navigate("Home");
         })
         .catch((e) => {
@@ -124,12 +136,17 @@ const Addtodo = (props) => {
           placeholderTextColor={"#00ADB5"}
           style={styles.input_title}
           placeholder="Enter title"
+          value={state.title}
           onChangeText={(newtext) => setState({ ...state, title: newtext })}
         />
         <View style>
-          <TouchableOpacity onPress={showDatepicker}>
+          {selectedTiming !== null ? (
+            <TouchableOpacity onPress={showDatepicker}>
             <Text style={styles.remind_time}>{formatDate(date, time)}</Text>
           </TouchableOpacity>
+        ) :<TouchableOpacity onPress={showDatepicker}>
+            <Text style={styles.remind_time}>{state.rtime}</Text>
+          </TouchableOpacity>}
         </View>
         {show && (
           <DateTimePicker
@@ -148,10 +165,17 @@ const Addtodo = (props) => {
           placeholderTextColor={"#00ADB5"}
           style={styles.input}
           placeholder="Enter description"
+          value={state.description}
           onChangeText={(newtext) =>
             setState({ ...state, description: newtext })
           }
         />
+        <TouchableOpacity onPress={()=>console.log('fin')}>
+          <Text style={styles.input}>finish: {state.finished}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>console.log('favor')}>
+          <Text style={styles.input}>favourite: {state.favor}</Text>
+          </TouchableOpacity>
       </KeyboardAvoidingView>
       <View>
         <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
@@ -164,9 +188,14 @@ const Addtodo = (props) => {
               style={styles.thumbnail}
             />
           </View>
-        ) : null}
+        ) :<View>
+            <Image
+              source={{ uri: state.uri }}
+              style={styles.thumbnail}
+            />
+          </View>}
       </View>
-      <Button style={styles.button} title="add" onPress={handler} />
+      <Button style={styles.button} title="edit" onPress={handler} />
     </View>
     </TouchableWithoutFeedback>
   );
@@ -216,4 +245,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Addtodo;
+export default Edittodo;
