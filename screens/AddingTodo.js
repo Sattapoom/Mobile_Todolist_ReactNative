@@ -6,7 +6,7 @@ import HeaderAdd from "../components/HeaderAdd";
 export default function AddingTodo({ navigation }) {
   return (
     <View style={styles.container}>
-      <HeaderAdd navigation={navigation} />
+      <HeaderAdd navigation={navigation} titletodo='Add todo'/>
       <Addtodo navigation={navigation} />
     </View>
   );

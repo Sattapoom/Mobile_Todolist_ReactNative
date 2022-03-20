@@ -4,17 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCaretLeft} from '@fortawesome/free-solid-svg-icons'
 
 
-const HeaderAdd = ({navigation}) => {
+const HeaderAdd = (props) => {
 
 const pressHandler = () => {
-    navigation.navigate('Home')
+    props.navigation.navigate('Home')
 }
   return (
     <View style={styles.header}>
         <TouchableOpacity style={{width:50}} onPress = {pressHandler}>
             <FontAwesomeIcon size={40} color={"#EEEEEE"} icon={faCaretLeft}/>
         </TouchableOpacity>
-    
+        <Text >{props.titletodo}</Text>
         </View>
   );
 };

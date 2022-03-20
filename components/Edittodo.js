@@ -55,6 +55,8 @@ const Edittodo = (props) => {
     setSelectedTiming(formatDate(date, time));
   };
 
+ 
+
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
@@ -63,6 +65,8 @@ const Edittodo = (props) => {
   const showDatepicker = () => {
     showMode("date");
   };
+
+ 
 
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -78,6 +82,12 @@ const Edittodo = (props) => {
   };
 
   const handler = () => {
+    if (selectedImage === null) {
+      var uri= { uri: state.uri } 
+    } else {
+      var uri= { uri : selectedImage.localUri }
+    }
+
     var id = state.id
     var data = {
       title: state.title,
@@ -85,15 +95,14 @@ const Edittodo = (props) => {
       finished: state.finished,
       favor: state.favor,
       rtime: formatDate(date, time),
-      uri: selectedImage.localUri ,
+      uri: uri.uri ,
     };
     if (data.title.length == 0) {
       alert("Title field is missing");
     } else {
       DataService.update(id,data)
+      
         .then(() => {
-          console.log(id)
-          console.log(data)
           setState({
             title: data.title,
             description: data.description,
@@ -103,7 +112,7 @@ const Edittodo = (props) => {
             uri: data.imageUri,
           });
 
-          alert("Todo edited");
+          alert("Todo updated");
           props.navigation.navigate("Home");
         })
         .catch((e) => {
@@ -148,6 +157,9 @@ const Edittodo = (props) => {
             <Text style={styles.remind_time}>{state.rtime}</Text>
           </TouchableOpacity>}
         </View>
+
+       
+
         {show && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -195,7 +207,7 @@ const Edittodo = (props) => {
             />
           </View>}
       </View>
-      <Button style={styles.button} title="edit" onPress={handler} />
+      <Button style={styles.button} title="update todo" onPress={handler} />
     </View>
     </TouchableWithoutFeedback>
   );
