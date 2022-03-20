@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import * as RootNavigation from '../RootNavigation.js';
 import DataService from "../services/service";
+import { useFocusEffect } from '@react-navigation/native';
 
 const Todolist = (props) => { 
 
@@ -12,7 +13,7 @@ const Todolist = (props) => {
 
     const [DATA, onChangeDATA] = useState([]);
     const navigation = RootNavigation ;
-    
+
     const getAll = () => {
       DataService.getAll()
       .then((response) => {
@@ -37,8 +38,16 @@ const Todolist = (props) => {
     useEffect(() => {
       getAll();
     },[textInput])
-    
-    
+
+    useFocusEffect(
+      React.useCallback(() => {
+        // console.log('focused')
+        getAll();
+        return () => {
+          // console.log('unfocused')
+        };
+      }, [])
+    );   
 
     const [selectedId, setSelectedId] = useState(null);
     const [visible,setVisible] = useState(false);
@@ -83,7 +92,7 @@ const Todolist = (props) => {
               keyExtractor={(item) => item.id}
               extraData={selectedId}
             />
-            <TodoPopup visible={visible} setVisible={setVisible} todo={todo} navigation={navigation} getAll={getAll}/>
+            <TodoPopup visible={visible} setVisible={setVisible} todo={todo} navigation={navigation} onChangeDATA={onChangeDATA} textInput={textInput}/>
         </View>
     );
 }

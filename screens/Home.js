@@ -7,32 +7,13 @@ import { useFocusEffect } from '@react-navigation/native';
 
 export default function Home() {
   const [textInput, onChangeInput] = useState("");
-  const getAll = () => {
-    DataService.getAll()
-    .then((response) => {
-      onChangeInput(response.data);
-    })
-  .catch((e) => {
-    console.log(e);
-  });}
-
-  useFocusEffect(
-    React.useCallback(() => {
-      // console.log('focused')
-      getAll();
-      return () => {
-        // console.log('unfocused')
-      };
-    }, [])
-  );
-
-
+  
   return (
     <View style={styles.container}>
       <Header
         onChangeInput={onChangeInput}
       />
-      <Todolist textInput={textInput} />
+      <Todolist textInput={textInput}/>
     </View>
   );
 }

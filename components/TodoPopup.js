@@ -21,12 +21,32 @@ const TodoPopup = (props) => {
     RootNavigation.navigate('Edit', props.todo)
   }
 
+  const getAll = () => {
+    DataService.getAll()
+    .then((response) => {
+    const data = response.data;
+    const showedTodo = [];
+    if(data!==[] && props.textInput !== ''){
+      data.forEach((value) => {
+          if(value.title.toLowerCase().includes(props.textInput.toLowerCase())){
+              showedTodo.push(value)
+          }
+      });
+      props.onChangeDATA(showedTodo);
+    }
+    else{
+      props.onChangeDATA(data);
+    }
+  })
+  .catch((e) => {
+    console.log(e);
+  });}
+
   const deleteHandler = (todo) => {
     DataService.delete(todo.id)
     .then(response => {
-      console.log(response.data)
       props.setVisible(false)
-      props.getAll();
+      getAll();
     })
     .catch(e => {
       console.log(e)
