@@ -8,8 +8,10 @@ import {
   Image,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faXmarkCircle, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faXmarkCircle, faGear , faTrash} from "@fortawesome/free-solid-svg-icons";
 import * as RootNavigation from '../RootNavigation.js';
+import DataService from "../services/service"
+
 const TodoPopup = (props) => {
   const visible = props.visible;
   const todo = props.todo;
@@ -17,7 +19,19 @@ const TodoPopup = (props) => {
   const pressHandler = () => {
     props.setVisible(false)
     RootNavigation.navigate('Edit', props.todo)
-}
+  }
+
+  const deleteHandler = (todo) => {
+    DataService.delete(todo.id)
+    .then(response => {
+      console.log(response.data)
+      props.setVisible(false)
+      props.getAll();
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
 
   return (
     <Modal transparent={true} visible={visible}>
@@ -56,8 +70,21 @@ const TodoPopup = (props) => {
                 <Text style={styles.info}>Remind Time : {todo.rtime}</Text>
                 <Image source={{ uri: todo.uri }} style={styles.thumbnail} />
               </View>
+              
             </>
           )}
+          {todo !== null ? (
+            <TouchableOpacity>
+            <FontAwesomeIcon
+              style={{ marginLeft: "70%" }}
+              size={30}
+              color={"#EEEEEE"}
+              icon={faTrash}
+              onPress={() => {deleteHandler(todo)}}
+            />
+            </TouchableOpacity>
+          ) : <noscript></noscript>
+          }
           <TouchableOpacity>
             <FontAwesomeIcon
               style={{ marginLeft: "90%" }}

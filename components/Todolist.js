@@ -83,7 +83,7 @@ const Todolist = (props) => {
               keyExtractor={(item) => item.id}
               extraData={selectedId}
             />
-            <TodoPopup visible={visible} setVisible={setVisible} todo={todo} navigation={navigation} />
+            <TodoPopup visible={visible} setVisible={setVisible} todo={todo} navigation={navigation} getAll={getAll}/>
         </View>
     );
 }
