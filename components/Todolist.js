@@ -34,7 +34,10 @@ const Todolist = (props) => {
       console.log(e);
     });}
 
-    getAll();
+    useEffect(() => {
+      getAll();
+    },[textInput])
+    
     
 
     const [selectedId, setSelectedId] = useState(null);
