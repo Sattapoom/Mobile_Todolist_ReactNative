@@ -17,18 +17,19 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import DataService from "../services/service";
+import * as RootNavigation from '../RootNavigation.js';
 
 const Edittodo = (props) => {
-  
-  
+  // console.log(RootNavigation.navigationRef.getCurrentRoute().params.favor);
+  const parameters =RootNavigation.navigationRef.getCurrentRoute().params
   const [state, setState] = useState({
-    id: props.navigation.getParam('id'),
-    title: props.navigation.getParam('title'),
-    description: props.navigation.getParam('description'),
-    finished: props.navigation.getParam('finished'),
-    favor: props.navigation.getParam('favor'),
-    rtime: props.navigation.getParam('rtime'),
-    uri: props.navigation.getParam('uri'),
+    id: parameters.id,
+    title:parameters.title,
+    description: parameters.description,
+    finished: parameters.finished,
+    favor: parameters.favor,
+    rtime: parameters.rtime,
+    uri: parameters.uri,
   });
 
   const [selectedTiming, setSelectedTiming] = useState(null);
@@ -113,7 +114,7 @@ const Edittodo = (props) => {
           });
 
           alert("Todo updated");
-          props.navigation.navigate("Home");
+          RootNavigation.navigate("Home");
         })
         .catch((e) => {
           console.log(e);

@@ -9,14 +9,14 @@ import {
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXmarkCircle, faGear } from "@fortawesome/free-solid-svg-icons";
-
+import * as RootNavigation from '../RootNavigation.js';
 const TodoPopup = (props) => {
   const visible = props.visible;
   const todo = props.todo;
 
   const pressHandler = () => {
     props.setVisible(false)
-    props.navigation.navigate('EditingTodo', props.todo)
+    RootNavigation.navigate('Edit', props.todo)
 }
 
   return (

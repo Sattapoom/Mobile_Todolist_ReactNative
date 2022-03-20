@@ -3,11 +3,11 @@ import { StyleSheet, View } from "react-native";
 
 import Addtodo from "../components/Addtodo";
 import HeaderAdd from "../components/HeaderAdd";
-export default function AddingTodo({ navigation }) {
+export default function AddingTodo() {
   return (
     <View style={styles.container}>
-      <HeaderAdd navigation={navigation} titletodo='Add todo'/>
-      <Addtodo navigation={navigation} />
+      <HeaderAdd titletodo='Add todo'/>
+      <Addtodo />
     </View>
   );
 }

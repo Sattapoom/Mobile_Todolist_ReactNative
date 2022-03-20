@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "todolist_mobile",
-    "slug": "todolist_mobile",
+    "name": "todolistMobile",
+    "slug": "todolistMobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

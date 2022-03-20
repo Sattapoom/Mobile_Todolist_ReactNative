@@ -17,7 +17,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import DataService from "../services/service";
-
+import * as RootNavigation from '../RootNavigation.js';
 const Addtodo = (props) => {
   const [state, setState] = useState({
     id: null,
@@ -92,7 +92,7 @@ const Addtodo = (props) => {
             uri: response.data.imageUri,
           });
           alert("Todo added");
-          props.navigation.navigate("Home");
+          RootNavigation.navigate("Home");
         })
         .catch((e) => {
           console.log(e);

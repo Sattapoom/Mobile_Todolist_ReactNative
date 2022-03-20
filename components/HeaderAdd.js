@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import {  View,StyleSheet, TouchableOpacity, Text } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCaretLeft} from '@fortawesome/free-solid-svg-icons'
-
+import * as RootNavigation from '../RootNavigation.js';
 
 const HeaderAdd = (props) => {
-
 const pressHandler = () => {
-    props.navigation.navigate('Home')
+    RootNavigation.navigate('Home')
 }
   return (
     <View style={styles.header}>

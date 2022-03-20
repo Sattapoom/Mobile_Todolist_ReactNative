@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import {  View,StyleSheet, TextInput, TouchableOpacity, Text } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faMagnifyingGlass,faPlus } from '@fortawesome/free-solid-svg-icons'
-
+import * as RootNavigation from '../RootNavigation.js';
 
 const Header = (props) => {
   const [text, onChangeText] = useState("");
 
   const pressHandler = () => {
-        props.navigation.navigate('AddingTodo')
+    RootNavigation.navigate('Add')
     }
 //   const Search = (keyword) =>{
 //     const showedTodo = [];

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity } from "react-native
 import TodoPopup from "./TodoPopup";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
-
+import * as RootNavigation from '../RootNavigation.js';
 import DataService from "../services/service";
 
 const Todolist = (props) => { 
@@ -11,7 +11,7 @@ const Todolist = (props) => {
     const textInput = props.textInput || '';
 
     const [DATA, onChangeDATA] = useState([]);
-    const navigation = props.navigation;
+    const navigation = RootNavigation ;
     
     const getAll = () => {
       DataService.getAll()
@@ -29,7 +29,6 @@ const Todolist = (props) => {
       else{
         onChangeDATA(data);
       }
-      
     })
     .catch((e) => {
       console.log(e);
@@ -90,7 +89,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width:'100%',
-        marginTop:25,
         justifyContent:'center',
       },
     item: {
@@ -98,8 +96,8 @@ const styles = StyleSheet.create({
         paddingHorizontal:25,
         marginLeft:'auto',
         marginRight:'auto',
-        marginTop:20,
-        marginBottom:20,
+        marginTop:25,
+        marginBottom:15,
         alignItems:'center',
         width: '90%',
         height:65,
