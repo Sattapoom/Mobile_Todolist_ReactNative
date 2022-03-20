@@ -37,7 +37,7 @@ const Todolist = (props) => {
 
     useEffect(() => {
       getAll();
-    },[textInput])
+    },[textInput,DATA])
 
     useFocusEffect(
       React.useCallback(() => {
@@ -53,10 +53,30 @@ const Todolist = (props) => {
     const [visible,setVisible] = useState(false);
     const [todo,setTodo] = useState(null);
 
+    const onClickStar = (todo,status) => {
+      var data = {
+        id: todo.id,
+        title: todo.title,
+        description: todo.description,
+        finished: todo.finished,
+        favor: status,
+        rtime: todo.rtime,
+        uri: todo.uri
+      };
+
+      DataService.update(todo.id, data)
+      .then(response => {
+          console.log(response.data);
+      })
+      .catch(e => {
+          console.log(e);
+      });
+    }
+
     const Item = ({ item, onPress,prvTitle}) => (
         <TouchableOpacity onPress={onPress} style={styles.item}>
           <Text style={[styles.title]}>{prvTitle}</Text>
-          <TouchableOpacity style={styles.star} >
+          <TouchableOpacity style={styles.star} onPress={() => onClickStar(item, (item.favor ? false:true))} >
             <FontAwesomeIcon size={45} color={item.favor ? "#FFD600" : '#EEEEEE'} icon={faStar}/>
           </TouchableOpacity>  
         </TouchableOpacity>
