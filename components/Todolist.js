@@ -42,7 +42,7 @@ const Todolist = (props) => {
 
   useEffect(() => {
     getAll();
-  }, [textInput, DATA]);
+  }, [textInput]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -71,6 +71,7 @@ const Todolist = (props) => {
 
     DataService.update(todo.id, data)
       .then((response) => {
+        getAll();
         // console.log(response.data);
       })
       .catch((e) => {
