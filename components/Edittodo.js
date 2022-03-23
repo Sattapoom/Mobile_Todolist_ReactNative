@@ -12,6 +12,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+// import CheckBox from "@react-native-community/checkbox";
+import CheckBox from "expo-checkbox";
 import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DataService from "../services/service";
@@ -31,7 +33,6 @@ const Edittodo = (props) => {
     rtime: parameters.rtime,
     uri: parameters.uri,
   });
-
   const [selectedTiming, setSelectedTiming] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [date, setDate] = useState(new Date());
@@ -89,6 +90,7 @@ const Edittodo = (props) => {
     if (pickerResult.cancelled === true) {
       return;
     }
+    setState({ ...state, uri: pickerResult.uri });
     setSelectedImage({ localUri: pickerResult.uri });
   };
 
@@ -142,7 +144,7 @@ const Edittodo = (props) => {
     }/${date.getFullYear()} ${time.getHours()}:${minute_str}`;
 
     remind_time = return_val;
-    return return_val + " ";
+    return return_val;
   };
 
   return (
@@ -157,7 +159,7 @@ const Edittodo = (props) => {
             <Text style={styles.label}>Title:</Text>
             <TextInput
               multiline={true}
-              placeholderTextColor={"#00ADB5"}
+              placeholderTextColor={"#222831"}
               style={styles.input_title}
               placeholder="Enter title"
               value={state.title}
@@ -189,7 +191,7 @@ const Edittodo = (props) => {
             <Text style={styles.label}>Description:</Text>
             <TextInput
               multiline={true}
-              placeholderTextColor={"#00ADB5"}
+              placeholderTextColor={"#222831"}
               style={styles.input_desc}
               placeholder="Enter description"
               value={state.description}
@@ -197,36 +199,85 @@ const Edittodo = (props) => {
                 setState({ ...state, description: newtext })
               }
             />
-            <Text style={styles.label}>Finish:</Text>
-            <TouchableOpacity
-              onPress={() => setState({ ...state, finished: !state.finished })}
+            <View
+              style={{ marginTop: 10, marginBottom: 25, flexDirection: "row" }}
             >
-              {state.finished !== false ? (
-                <Text style={styles.finfav}>Finished</Text>
-              ) : (
-                <Text style={styles.finfav}>Unfinished</Text>
-              )}
-            </TouchableOpacity>
-            <Text style={styles.label}>Favourite:</Text>
-            <TouchableOpacity
-              onPress={() => setState({ ...state, favor: !state.favor })}
+              <Text style={styles.label}>
+                Finish:{"\t"}
+                {"\t"}
+                <CheckBox
+                  value={state.finished}
+                  onValueChange={() =>
+                    setState({ ...state, finished: !state.finished })
+                  }
+                />
+              </Text>
+
+              <Text
+                style={{
+                  color: "#00ADB5",
+                  width: "100%",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  marginTop: 10,
+                  marginLeft: 10,
+                }}
+              >
+                {state.finished ? "Yes" : "No"}
+              </Text>
+            </View>
+
+            <View
+              style={{ marginTop: 10, marginBottom: 25, flexDirection: "row" }}
             >
-              {state.favor !== false ? (
-                <Text style={styles.finfav}>Favourited</Text>
-              ) : (
-                <Text style={styles.finfav}>Unfavourited</Text>
-              )}
-            </TouchableOpacity>
+              <Text style={styles.label}>
+                Favourite:{"\t"}
+                {"\t"}
+                <CheckBox
+                  value={state.favor}
+                  onValueChange={() =>
+                    setState({ ...state, favor: !state.favor })
+                  }
+                />
+              </Text>
+              <Text
+                style={{
+                  color: "#00ADB5",
+                  width: "100%",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  marginTop: 10,
+                  marginLeft: 10,
+                }}
+              >
+                {state.favor ? "Yes" : "No"}
+              </Text>
+            </View>
 
             <Text style={styles.label}>Upload image:</Text>
             <View>
-              {selectedImage !== null ? (
+              {state.uri !== null ? (
                 <View>
                   <TouchableOpacity onPress={openImagePickerAsync}>
                     <Image
-                      source={{ uri: selectedImage.localUri }}
+                      source={{ uri: state.uri }}
                       style={styles.thumbnail}
                     />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.clear_img}>
+                    <Text
+                      style={{
+                        color: "#EEEEEE",
+                        fontWeight: "bold",
+                        fontSize: 13,
+                      }}
+                      onPress={() => {
+                        setState({ ...state, uri: null });
+                        setSelectedImage(null);
+                      }}
+                    >
+                      Clear Image
+                    </Text>
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -239,7 +290,6 @@ const Edittodo = (props) => {
               )}
             </View>
           </KeyboardAvoidingView>
-          {/* <Button style={styles.button} title="update todo" onPress={handler} /> */}
         </View>
       </TouchableWithoutFeedback>
       <TouchableOpacity style={styles.add_button} onPress={handler}>
@@ -263,7 +313,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 20,
     color: "#00ADB5",
-    width: "100%",
     fontSize: 20,
   },
   input_desc: {
@@ -300,7 +349,6 @@ const styles = StyleSheet.create({
     color: "#00ADB5",
     alignItems: "center",
     height: 40,
-    width: "100%",
     fontSize: 28,
     fontWeight: "bold",
   },
@@ -333,6 +381,18 @@ const styles = StyleSheet.create({
     width: 360,
     height: 150,
     resizeMode: "contain",
+  },
+  clear_img: {
+    position: "absolute",
+    left: "80%",
+    bottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 50,
+    height: 50,
+    color: "#EEEEEE",
+    backgroundColor: "red",
+    borderRadius: 25,
   },
 });
 

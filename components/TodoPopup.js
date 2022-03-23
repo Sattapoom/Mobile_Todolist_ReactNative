@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -50,14 +51,31 @@ const TodoPopup = (props) => {
   };
 
   const deleteHandler = (todo) => {
-    DataService.delete(todo.id)
-      .then((response) => {
-        props.setVisible(false);
-        getAll();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    Alert.alert(
+      "Are you sure to delete this?",
+      "You won't be able to revert this!",
+      [
+        {
+          text: "Cancel",
+          // onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "ํYes, Delete it",
+          onPress: () => {
+            // console.log("OK Pressed");
+            DataService.delete(todo.id)
+              .then((response) => {
+                props.setVisible(false);
+                getAll();
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          },
+        },
+      ]
+    );
   };
 
   return (

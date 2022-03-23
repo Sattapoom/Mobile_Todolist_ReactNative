@@ -125,7 +125,7 @@ const Addtodo = (props) => {
     }/${date.getFullYear()} ${time.getHours()}:${minute_str}`;
 
     remind_time = return_val;
-    return return_val + " ";
+    return return_val;
   };
 
   return (
@@ -149,7 +149,7 @@ const Addtodo = (props) => {
             <View>
               <TouchableOpacity onPress={showDatepicker}>
                 <Text style={styles.remind_time}>
-                  {formatDate(date, time)}
+                  {formatDate(date, time) + " "}
                   <FontAwesomeIcon size={26} color={"#00ADB5"} icon={faClock} />
                 </Text>
               </TouchableOpacity>
@@ -184,6 +184,20 @@ const Addtodo = (props) => {
                       source={{ uri: selectedImage.localUri }}
                       style={styles.thumbnail}
                     />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.clear_img}>
+                    <Text
+                      style={{
+                        color: "#EEEEEE",
+                        fontWeight: "bold",
+                        fontSize: 13,
+                      }}
+                      onPress={() => {
+                        setSelectedImage(null);
+                      }}
+                    >
+                      Clear Image
+                    </Text>
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -280,6 +294,18 @@ const styles = StyleSheet.create({
     width: 360,
     height: 150,
     resizeMode: "contain",
+  },
+  clear_img: {
+    position: "absolute",
+    left: "80%",
+    bottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 50,
+    height: 50,
+    color: "#EEEEEE",
+    backgroundColor: "red",
+    borderRadius: 25,
   },
 });
 

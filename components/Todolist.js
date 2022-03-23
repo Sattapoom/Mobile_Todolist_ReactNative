@@ -114,20 +114,28 @@ const Todolist = (props) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
-      />
-      <TodoPopup
-        visible={visible}
-        setVisible={setVisible}
-        todo={todo}
-        navigation={navigation}
-        onChangeDATA={onChangeDATA}
-        textInput={textInput}
-      />
+      {DATA.length !== 0 ? (
+        <View style={styles.container}>
+          <FlatList
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            extraData={selectedId}
+          />
+          <TodoPopup
+            visible={visible}
+            setVisible={setVisible}
+            todo={todo}
+            navigation={navigation}
+            onChangeDATA={onChangeDATA}
+            textInput={textInput}
+          />
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <Text style={styles.no_res}>No result found</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -137,6 +145,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     justifyContent: "center",
+    height: "100%",
   },
   item: {
     flexDirection: "row",
@@ -155,6 +164,12 @@ const styles = StyleSheet.create({
   title: {
     color: "#EEEEEE",
     fontSize: 24,
+  },
+  no_res: {
+    textAlignVertical: "top",
+    color: "#00ADB5",
+    fontSize: 18,
+    alignSelf: "center",
   },
   star: {
     marginLeft: "75%",
